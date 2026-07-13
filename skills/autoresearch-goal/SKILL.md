@@ -26,12 +26,13 @@ Use this workflow when a research mission should be bound to Codex goal-mode foc
 2. Emit the model-facing handoff:
    `omx autoresearch-goal handoff --slug <slug>`
 3. In the active Codex thread, call `get_goal`; call `create_goal` only if no active goal exists and the printed payload is the intended objective.
-4. Research iteratively against the rubric. Record every critic outcome:
+4. For missions improved through executable experiments, read and apply [the measured experiment sidecar](references/measured-experiment-sidecar.md). It conditions this lifecycle; it does not replace it.
+5. Research iteratively against the rubric. Record every critic outcome:
    `omx autoresearch-goal verdict --slug <slug> --verdict <pass|fail|blocked> --evidence "..."`
-5. Completion is blocked until professor-critic validation records `verdict=pass`. After the mission audit passes, call `update_goal({status: "complete"})`, call `get_goal` again, then run:
+6. Completion is blocked until professor-critic validation records `verdict=pass`. After the mission audit passes, call `update_goal({status: "complete"})`, call `get_goal` again, then run:
    `omx autoresearch-goal complete --slug <slug> --codex-goal-json <get_goal-json-or-path>`
-6. Treat the completion command as read-only reconciliation plus durable OMX state update; hooks and shell commands must not mutate Codex goal state.
-7. After the completion command succeeds, run `/goal clear` in the Codex UI before starting another goal in this same thread/session. OMX prints this terminal cleanup step but does not invoke hidden clear routes.
+7. Treat the completion command as read-only reconciliation plus durable OMX state update; hooks and shell commands must not mutate Codex goal state.
+8. After the completion command succeeds, run `/goal clear` in the Codex UI before starting another goal in this same thread/session. OMX prints this terminal cleanup step but does not invoke hidden clear routes.
 
 ## Completion gate
 A passing professor-critic artifact and a matching complete Codex `get_goal` snapshot are required. Assistant prose, partial tests, or a failed/blocked verdict are not sufficient.
